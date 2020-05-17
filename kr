@@ -1,0 +1,69 @@
+using System;
+using System.Collections;
+ 
+namespace KR-2
+{
+    class Tableware
+    {
+        static List tablewares = new List();
+        public string name { get; set; }
+        public string material { get; set; }
+        public decimal price { get; set; }
+        public string manufacturer { get; set; }
+        public Tableware(string name, string material, decimal price, string manufacturer)
+        {
+            this.name = name;
+            this.material = material;
+            this.price = price;
+            this.manufacturer = manufacturer;
+        }
+        public static void CreateTableware()
+        {
+            bool converted;
+            string enteredName, enteredMaterial, enteredManufacturer;
+            decimal enteredPrice;
+            do
+            {
+                Console.WriteLine("Enter a tableware name:");
+                enteredName = Console.ReadLine();
+                Console.WriteLine("Enter a tableware material:");
+                enteredMaterial = Console.ReadLine();
+                Console.WriteLine("Enter a tableware manufacturer:");
+                enteredManufacturer = Console.ReadLine();
+                Console.WriteLine("Enter a tableware price");
+                converted = decimal.TryParse(Console.ReadLine(), out enteredPrice);
+                if (!converted) Console.WriteLine("Unable to convert, please try again");
+            } while (!converted);
+            tablewares.Add(new Tableware(enteredName, enteredMaterial, enteredPrice, enteredManufacturer));
+            Console.WriteLine("Success.");
+        }
+        public static void ShowTablewares()
+        {
+            if (tablewares.Count == 0)
+            {
+                Console.WriteLine("The list is empty");
+                return;
+            }
+            Console.WriteLine("Existing tablewares:");
+            foreach (Tableware tableware in tablewares)
+            {
+                Console.WriteLine("Name: {0}, Material: {1}, Price: {2}, Manufacturer: {3}", tableware.name, tableware.material, tableware.price, tableware.manufacturer);
+            }
+        }
+    }
+ 
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Press F1 to create a new tableware or F2 to show existing ones.");
+            ConsoleKeyInfo key;
+            while (true)
+            {
+                key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.F1) Tableware.CreateTableware();
+                if (key.Key == ConsoleKey.F2) Tableware.ShowTablewares();
+            }
+        }
+    }
+}
